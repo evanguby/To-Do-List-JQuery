@@ -1,0 +1,38 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <title>To Do List</title>
+    <meta name="author" content="Evan Guby">
+
+    <link rel="stylesheet" href="style.css">
+    <script src="jquery-3.3.1.js"></script>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <h1>To-Do List</h1>
+      <input type="text" id="new-task" placeholder="To-do">
+      <select type="select" class="priority">
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+      </select>
+      <button onclick="addTask()" class="add-button">ADD</button>
+      <div class="tasks">
+          <label>Tasks:</label>
+          <label class="priority-label">Priority:</label>
+          <ul class="tasks-list-high" id="tasks-list-high">
+          </ul>
+          <ul class="tasks-list-medium" id="tasks-list-medium">
+          </ul>
+          <ul class="tasks-list-low" id="tasks-list-low">
+          </ul>
+      </div>
+    </div>
+    <button class="clear-button">Clear Completed Tasks</button>
+    <script src="todolist.js"></script>
+  </body>
+</html>
