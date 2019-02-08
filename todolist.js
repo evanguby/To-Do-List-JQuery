@@ -31,9 +31,9 @@ function addTask() {
     $("input").click(function() {
         var test = $(this).next();
         if($(this).is(':checked'))
-            $(this).next().css('text-decoration','line-through');
+            $(this).next().addClass('strike');
         else
-            $(this).next().css('text-decoration','none');
+            $(this).next().removeClass('strike');
     });
 
     //reset the new task input box
@@ -48,4 +48,8 @@ $("#new-task").keyup(function(event) {
     if (event.keyCode === 13) {
         addTask();
     }
+});
+
+$(".clear-button").click(function(){
+    $(".strike").parent().remove();
 });
