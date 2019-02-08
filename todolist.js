@@ -1,8 +1,7 @@
 function addTask() {
     //don't add anything if input is blank
-    if($("#new-task").val() == '')
+    if($.trim($("#new-task").val()) == '')
         return;
-    var test = $("#priority").val();
     var entry;
     //append new list item in to do list
     if($(".priority").val() == "low"){ //if priority is low, medium, high
@@ -36,7 +35,6 @@ function addTask() {
 
     //reset the new task input box
     $("#new-task").val('');
-
     $("#new-task").focus();
 }
 
@@ -48,10 +46,7 @@ $("#new-task").keyup(function(event) {
     }
 });
 
-$(".clear-button").click(function(){
-    $(".strike").parent().remove();
-});
-
+//function to append new task to appropriate list
 function append(task, priority){
     if(priority == "low"){
         $(".tasks-list-low").append(task);
@@ -63,34 +58,35 @@ function append(task, priority){
 
     //add delete button functionality
     $(".delete").click(function(){
-        $(this).closest('li').remove();
+        $(this).closest('li').remove(); //get li element and remove it
     });
 
-    //add edit button functionality
+    //add edit/save button functionality
     $(".edit").click(function(event) {
         event.stopImmediatePropagation(); //fixes bug where click event was being fired more than once
-        var task = $(this).parent().prev().prev();
-        var priority = $(this).parent().prev();
-        if($(this).html() == 'edit'){
-            $(this).html('save');
-            task.attr('contenteditable','true');
-            task.focus();
-            priority.prop('disabled', false);
-            priority.addClass("task-priority-unsaved");
+        var task = $(this).parent().prev().prev(); //get task span
+        var priority = $(this).parent().prev(); //get priority select box
+        if($(this).html() == 'edit'){ //hit edit button
+            $(this).html('save'); //change edit button to save
+            task.attr('contenteditable','true'); //make task edittable
+            task.focus(); //focus on task
+            priority.prop('disabled', false);  //make priority edittable
+            priority.addClass("task-priority-unsaved"); //change priority class from saved to unsaved
             priority.removeClass("task-priority-saved");
-        } else {
-            $(this).html('edit');
-            task.attr('contenteditable','false');
-            task.focus();
-            priority.prop('disabled', true);
-            priority.removeClass("task-priority-unsaved");
+        } else { //hit save button
+            if($.trim(task.val()) == ''){ //if task is now blank, remove it
+                task.closest('li').remove(); //get li element and remove it
+                return;
+            }
+            $(this).html('edit'); //change edit back to save
+            task.attr('contenteditable','false'); //make content not edittable
+            priority.prop('disabled', true); //make priority not edittable
+            priority.removeClass("task-priority-unsaved"); //change class from unsaved to saved
             priority.addClass("task-priority-saved");
-            var test = task.parent().parent().attr("class");
-            var test2 =priority.val();
-            var listEntry = task.parent();
+            var listEntry = task.parent(); //get the entire li element in case it changed priority
             if(priority.val() == 'low' && task.parent().parent().attr("class") != 'tasks-list-low'){
-                task.parent().remove();
-                append(listEntry, "low");
+                task.parent().remove(); // remove from current priority list
+                append(listEntry, "low"); // add it to corrent list
             } else if(priority.val() == 'medium' && task.parent().parent().attr("class") != 'tasks-list-medium'){
                 task.parent().remove();
                 append(listEntry, "medium");
@@ -104,20 +100,21 @@ function append(task, priority){
     //add enter button functionality when editting
     $("span").keyup(function(event) {
         if (event.keyCode === 13) {
-            $(this).next().next().children(":first").html('edit');
-            var task = $(this);
-            var priority = $(this).next();
-            task.attr('contenteditable','false');
-            task.focus();
-            priority.prop('disabled', true);
-            priority.removeClass("task-priority-unsaved");
+            $(this).next().next().children(":first").html('edit'); //change save button to edit
+            var task = $(this); //get task element 
+            if($.trim(task.val()) == ''){ //if task is now blank, remove it
+                task.closest('li').remove(); //get li element and remove it
+                return;
+            }
+            var priority = $(this).next(); //get priority element
+            task.attr('contenteditable','false'); //make task not edittable
+            priority.prop('disabled', true); //make priority not edittable
+            priority.removeClass("task-priority-unsaved"); //change class from unsave to saved
             priority.addClass("task-priority-saved");
-            var test = task.parent().parent().attr("class");
-            var test2 =priority.val();
-            var listEntry = task.parent();
+            var listEntry = task.parent(); //get li element in case it changed priority
             if(priority.val() == 'low' && task.parent().parent().attr("class") != 'tasks-list-low'){
-                task.parent().remove();
-                append(listEntry, "low");
+                task.parent().remove(); //remove from current list
+                append(listEntry, "low"); //add to correct list
             } else if(priority.val() == 'medium' && task.parent().parent().attr("class") != 'tasks-list-medium'){
                 task.parent().remove();
                 append(listEntry, "medium");
@@ -130,10 +127,14 @@ function append(task, priority){
 
     //add checkbox functionality
     $("input").click(function() {
-        var test = $(this).next();
         if($(this).is(':checked'))
-            $(this).next().addClass('strike');
+            $(this).next().addClass('strike'); //when task is checked add the strike css animation
         else
-            $(this).next().removeClass('strike');
+            $(this).next().removeClass('strike'); //remove strike if unchecked
     });
 }
+
+//clear completed tasks button functionality
+$(".clear-button").click(function(){
+    $(".strike").parent().remove();
+});
