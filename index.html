@@ -15,10 +15,20 @@
     <div class="wrapper">
       <h1>To-Do List</h1>
       <input type="text" id="new-task" placeholder="To-do">
+      <select type="select" class="priority">
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+      </select>
       <button onclick="addTask()" class="add-button">ADD</button>
       <div class="tasks">
           <label>Tasks:</label>
-          <ul class="tasks-list" id="tasks-list">
+          <label class="priority-label">Priority:</label>
+          <ul class="tasks-list-high" id="tasks-list-high">
+          </ul>
+          <ul class="tasks-list-medium" id="tasks-list-medium">
+          </ul>
+          <ul class="tasks-list-low" id="tasks-list-low">
           </ul>
       </div>
     </div>
