@@ -74,10 +74,6 @@ function append(task, priority){
             priority.addClass("task-priority-unsaved"); //change priority class from saved to unsaved
             priority.removeClass("task-priority-saved");
         } else { //hit save button
-            if($.trim(task.val()) == ''){ //if task is now blank, remove it
-                task.closest('li').remove(); //get li element and remove it
-                return;
-            }
             $(this).html('edit'); //change edit back to save
             task.attr('contenteditable','false'); //make content not edittable
             priority.prop('disabled', true); //make priority not edittable
@@ -102,10 +98,6 @@ function append(task, priority){
         if (event.keyCode === 13) {
             $(this).next().next().children(":first").html('edit'); //change save button to edit
             var task = $(this); //get task element 
-            if($.trim(task.val()) == ''){ //if task is now blank, remove it
-                task.closest('li').remove(); //get li element and remove it
-                return;
-            }
             var priority = $(this).next(); //get priority element
             task.attr('contenteditable','false'); //make task not edittable
             priority.prop('disabled', true); //make priority not edittable
